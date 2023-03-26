@@ -252,10 +252,11 @@ const insertOnSearchPage = (elTrigger) => {
     if (beerUrl) productType = 'beer'
     if (liquorUrl) productType = 'liquor'
 
-    if (!location.href.includes('/sok/')) return
+    if (!location.href.includes('/sortiment/')) return
 
     // Prepare sb markup
-    const elCard = elTrigger.parentElement
+    const elCard = elTrigger;
+    if (elCard == null) return
     elCard.classList.add('card')
 
     // Create rating element
@@ -265,11 +266,17 @@ const insertOnSearchPage = (elTrigger) => {
 
     if (elCard.getElementsByClassName(ratingElementClass)[0]) return
 
-    elCard.appendChild(elRatingWrapper);
+    elCard.prepend(elRatingWrapper);
 
     // Systembolaget Data
-    const sbName = elTrigger.querySelector("h3")?.innerText.trim()
-    const sbType = elTrigger.querySelector("h4")?.innerText.trim()
+    //TODO: dont use dyanmic css selectors
+    const title = elTrigger.querySelector(".css-106ciad")?.innerText.trim();
+    const provider = elTrigger.querySelector(".css-1buyea6")?.innerText.trim();
+    var sbName = title;
+    if (provider != undefined) {
+        sbName = sbName + " " + provider;
+    }
+    const sbType = elTrigger.querySelector("h4")?.innerText.trim();
 
     create(sbName, sbType, elRatingWrapper, elCard, productType)
 }
@@ -277,6 +284,7 @@ const insertOnSearchPage = (elTrigger) => {
 const observer = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
         if (!entry.isIntersecting) return
+
         observer.unobserve(entry.target);
         insertOnSearchPage(entry.target)
     });
@@ -285,9 +293,11 @@ const observer = new IntersectionObserver((entries, observer) => {
 });
 
 export const init = () => {
-    const wineItemSelector = 'main a[href*="/vin"], main a[href*="/ol"], main a[href*="/sprit"]'
-    sentinel.on(wineItemSelector, (el) => observer.observe(el))
-
-    const winePageSelector = 'h3'
-    sentinel.on(winePageSelector, insertOnProdcutPage)
+    window.setTimeout(() => {
+        const wineItemSelector = 'main a[href*="/vin"], main a[href*="/ol"], main a[href*="/sprit"]'
+        sentinel.on(wineItemSelector, (el) => observer.observe(el))
+    
+        const winePageSelector = 'h3'
+        sentinel.on(winePageSelector, insertOnProdcutPage)
+      }, 2000);
 }

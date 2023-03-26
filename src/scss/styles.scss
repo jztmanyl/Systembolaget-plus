@@ -4,7 +4,7 @@
     --vivinoColor: #a11122;
     --untappdColor: #ffc000;
     --distillerColor: #f05a41;
-    --systembolagetColor: rgb(12, 115, 65);
+    --systembolagetColor: #17bb61;
 }
 
 .card {
@@ -63,13 +63,13 @@
         }
     }
     &.search-page {
-        position: absolute;
+        position: relative;
         right: 0;
         bottom: 0;
 
         padding: 16px;
 
-        border-top: 1px solid rgba(45, 41, 38, .1);
+        border-bottom: 1px solid rgba(45, 41, 38, .1);
     }
     &.product-page {
         margin-top: 16px;
@@ -83,7 +83,7 @@
 
     .name {
         font-size: 12px;
-
+        margin-left: 20px;
         overflow: hidden;
         //max-width: 250px;
 
@@ -109,7 +109,7 @@
     }
     .logo {
         display: none;
-
+        position: absolute;
         height: 16px;
         margin-right: 8px;
 
@@ -138,9 +138,9 @@
 
         height: 100%;
 
-        background: lightgray;
+        background: #fff;
 
-        mix-blend-mode: screen;
+        mix-blend-mode: color;
     }
 
     .reviews {
@@ -177,8 +177,9 @@
 
 @media screen and (min-width: 768px) {
     .product-rating.search-page {
-        max-width: calc(100% - var(--image-width));
-        padding: 16px 24px 16px 0;
+        height: 49px;
+        min-width: 100%;
+        z-index: 9;
     }
 }
 
