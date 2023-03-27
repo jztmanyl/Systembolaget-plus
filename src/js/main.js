@@ -34,7 +34,7 @@ const getFromLocal = (query) => new Promise((resolve, reject) => {
     });
 })
 
-const create = async (name, sbType, elWrapper, elItem, productType) => {
+const create = async (name, sbType, elWrapper, elItem, productType, sbPrice, sbVolume) => {
 
     if (isWineBox(sbType)) {
         elWrapper.remove()
@@ -68,6 +68,13 @@ const create = async (name, sbType, elWrapper, elItem, productType) => {
             return
         }
     }
+
+    var volume = parseFloat(parseInt(sbVolume) / 1000);
+    var rpk = parseFloat((sbPrice / volume) / (Math.pow((parseFloat(data.rating) - 2), 2) * 2)).toFixed(1);
+    if (rpk == undefined || rpk == NaN || rpk == "NaN") {
+        rpk = "";
+    }
+
     elWrapper.setAttribute('title', data.source)
     elWrapper.classList.add(data.type)
     elWrapper.href = data.url
@@ -81,6 +88,7 @@ const create = async (name, sbType, elWrapper, elItem, productType) => {
         </div>
         <div class="score">
             <div class="reviews">${data.reviews} betyg</div>
+            <div class="rpk">${rpk}</div>
             <div class="rating">${data.rating}</div>
             <div class="stars">
                 <svg viewBox="0 0 576 512" title="star">
@@ -240,7 +248,7 @@ const insertOnProdcutPage = (elTrigger) => {
     const sbName = document.querySelector("main h1")?.innerText.trim()
     const sbType = document.querySelector("main h4")?.parentElement.parentElement.innerText.trim()
 
-    create(sbName, sbType, elRatingWrapper, targetParent.parentElement, productType)
+    create(sbName, sbType, elRatingWrapper, targetParent.parentElement, productType, 0, 0)
 
 }
 
@@ -282,9 +290,21 @@ const insertOnSearchPage = (elTrigger) => {
         sbName = sbName + " " + provider;
     }
 
+    const sbPrice = elTrigger.querySelector(".css-1kvpmze")?.innerText
+        .replace(":", "")
+        .replace("-", "")
+        .replace("*", "")
+        .replace(" ", "")
+        .trim();
+
     const sbType = elTrigger.querySelector("h4")?.innerText.trim();
 
-    create(sbName, sbType, elRatingWrapper, elCard, productType)
+    const sbVolume = elTrigger.querySelector(".css-8zpafe:nth-child(2) .css-1v58a65")?.innerText
+        .replace("ml", "")
+        .replace(" ", "")
+        .trim();
+
+    create(sbName, sbType, elRatingWrapper, elCard, productType, sbPrice, sbVolume)
 }
 
 const observer = new IntersectionObserver((entries, observer) => {
@@ -305,5 +325,5 @@ export const init = () => {
     
         const winePageSelector = 'h3'
         sentinel.on(winePageSelector, insertOnProdcutPage)
-      }, 2000);
+      }, 500);
 }
