@@ -227,12 +227,10 @@ const insertOnProdcutPage = (elTrigger) => {
     if (beerUrl) productType = 'beer'
     if (liquorUrl) productType = 'liquor'
 
-    if(elTrigger.innerText !== 'Handla i butik') return
+    //if(elTrigger.innerText !== 'Handla i butik') return
 
     // Find elements to insert relative to
-    const parre = elTrigger.closest('.react-no-print');
-    const target = elTrigger.closest('.react-no-print');
-    const targetParent = target.parentElement
+    const targetParent = elTrigger.parentElement;
 
     // Create rating element
     const elRatingWrapper = document.createElement("a")
@@ -242,13 +240,31 @@ const insertOnProdcutPage = (elTrigger) => {
     const elExcisitingRating = document.getElementsByClassName(ratingElementClass)[0]
     if (elExcisitingRating) elExcisitingRating.remove()
 
-    targetParent.insertBefore(elRatingWrapper, target)
+    targetParent.insertBefore(elRatingWrapper, elTrigger)
 
     // Systembolaget Data
-    const sbName = document.querySelector("main h1")?.innerText.trim()
+    const title = document.querySelector(".css-1rw23u7")?.innerText.trim();
+    const provider = document.querySelector(".css-qry54b")?.innerText.trim();
+    var sbName = title;
+    if (provider != undefined) {
+        sbName = sbName + " " + provider;
+    }
+
     const sbType = document.querySelector("main h4")?.parentElement.parentElement.innerText.trim()
 
-    create(sbName, sbType, elRatingWrapper, targetParent.parentElement, productType, 0, 0)
+    const sbPrice = document.querySelector(".css-mzsruq")?.innerText
+        .replace(":", "")
+        .replace("-", "")
+        .replace("*", "")
+        .replace(" ", "")
+        .trim();
+
+    const sbVolume = document.querySelectorAll(".css-1yfm6cm .css-12l74ml")[1]?.innerText
+        .replace("ml", "")
+        .replace(" ", "")
+        .trim();
+
+    create(sbName, sbType, elRatingWrapper, targetParent.parentElement, productType, sbPrice, sbVolume)
 
 }
 
@@ -323,7 +339,7 @@ export const init = () => {
         const wineItemSelector = 'main a[href*="/vin"], main a[href*="/ol"], main a[href*="/sprit"]'
         sentinel.on(wineItemSelector, (el) => observer.observe(el))
     
-        const winePageSelector = 'h3'
+        const winePageSelector = '.css-tx0xzd .react-no-print'
         sentinel.on(winePageSelector, insertOnProdcutPage)
       }, 500);
 }
