@@ -70,7 +70,8 @@ const create = async (name, sbType, elWrapper, elItem, productType, sbPrice, sbV
     }
 
     var volume = parseFloat(parseInt(sbVolume) / 1000);
-    var rpk = parseFloat((sbPrice / volume) / (Math.pow((parseFloat(data.rating) - 2), 2) * 2)).toFixed(1);
+    var price = parseFloat(sbPrice);
+    var rpk = parseFloat((price / volume) / (Math.pow((parseFloat(data.rating) - 2), 2) * 2)).toFixed(1);
     if (rpk == undefined || rpk == NaN || rpk == "NaN") {
         rpk = "";
     }
@@ -307,17 +308,17 @@ const insertOnSearchPage = (elTrigger) => {
     }
 
     const sbPrice = elTrigger.querySelector(".css-1kvpmze")?.innerText
-        .replace(":", "")
-        .replace("-", "")
-        .replace("*", "")
-        .replace(" ", "")
+        .replaceAll(":-", "")
+        .replaceAll(":", ".")
+        .replaceAll("*", "")
+        .replaceAll(" ", "")
         .trim();
 
     const sbType = elTrigger.querySelector("h4")?.innerText.trim();
 
     const sbVolume = elTrigger.querySelector(".css-8zpafe:nth-child(2) .css-1v58a65")?.innerText
-        .replace("ml", "")
-        .replace(" ", "")
+        .replaceAll("ml", "")
+        .replaceAll(" ", "")
         .trim();
 
     create(sbName, sbType, elRatingWrapper, elCard, productType, sbPrice, sbVolume)
