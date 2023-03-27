@@ -282,7 +282,12 @@ const insertOnSearchPage = (elTrigger) => {
     if (beerUrl) productType = 'beer'
     if (liquorUrl) productType = 'liquor'
 
-    if (!location.href.includes('/sortiment/') && !location.href.includes('/mina-sidor/mina-listor/')) return
+    if (!location.href.includes('/sortiment/') 
+        && !location.href.includes('/mina-sidor/mina-listor/') 
+        && !location.href.includes('/delad-lista/')) 
+    {
+        return;
+    }
 
     // Prepare sb markup
     const elCard = elTrigger;
