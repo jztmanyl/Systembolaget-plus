@@ -139,6 +139,11 @@ const create = async (name, sbType, elWrapper, elItem, productType) => {
     if(productType === 'wine') caption = 'vivino'
     if(productType === 'beer') caption = 'untappd'
     if(productType === 'liquor') caption = 'distiller'
+
+    if (!data.image.includes('http')) {
+        data.image = 'https://' + data.image;
+    }
+
     elNewImage.innerHTML = `
     <img src="${data.image}">
     <figcaption>${caption}</figcaption>`
@@ -252,7 +257,7 @@ const insertOnSearchPage = (elTrigger) => {
     if (beerUrl) productType = 'beer'
     if (liquorUrl) productType = 'liquor'
 
-    if (!location.href.includes('/sortiment/')) return
+    if (!location.href.includes('/sortiment/') && !location.href.includes('/mina-sidor/mina-listor/')) return
 
     // Prepare sb markup
     const elCard = elTrigger;
@@ -276,6 +281,7 @@ const insertOnSearchPage = (elTrigger) => {
     if (provider != undefined) {
         sbName = sbName + " " + provider;
     }
+
     const sbType = elTrigger.querySelector("h4")?.innerText.trim();
 
     create(sbName, sbType, elRatingWrapper, elCard, productType)
