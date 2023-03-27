@@ -87,8 +87,8 @@ const create = async (name, sbType, elWrapper, elItem, productType, sbPrice, sbV
             <div class="name">${data.name}</div>
         </div>
         <div class="score">
-            <div class="reviews">${data.reviews} betyg</div>
             <div class="rpk">${rpk}</div>
+            <div class="reviews">${data.reviews} betyg</div>
             <div class="rating">${data.rating}</div>
             <div class="stars">
                 <svg viewBox="0 0 576 512" title="star">
@@ -341,5 +341,5 @@ export const init = () => {
     
         const winePageSelector = '.css-tx0xzd .react-no-print'
         sentinel.on(winePageSelector, insertOnProdcutPage)
-      }, 500);
+    }, 150);
 }
